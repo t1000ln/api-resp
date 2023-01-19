@@ -55,9 +55,17 @@ mod tests {
     }
 }
 ```
-执行上面的测试方法将打印出信息：
+执行上面的测试方法将打输出类似下面的信息：
+
+`suc_json:`
 ```json
-suc_json: {"success":true,"code":0,"message":"","data":null}
-suc_data: {"success":true,"code":0,"message":"","data":[{"color":"white","weight":10.0},{"color":"yellow","weight":11.5}]}
-fail_json: {"success":false,"code":-1,"message":"交易出错了","data":null}
+{"success":true,"code":0,"message":"","data":null}
+```
+`suc_data:`
+```json
+{"success":true,"code":0,"message":"","data":[{"color":"white","weight":10.0},{"color":"yellow","weight":11.5}]}
+```
+`fail_json:`
+```json
+{"success":false,"code":-1,"message":"交易出错了","data":null}
 ```

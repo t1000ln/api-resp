@@ -2,6 +2,7 @@
 name = "api-resp"
 version = "0.1.0"
 edition = "2021"
+categories = ["development-tools"]
 authors = ["t1000ln"]
 license = "MIT"
 description = "为远程/异步调用API的返回结果，定义通用的封装结构和基本方法，返回的数据结构为json字符串。"
@@ -15,3 +16,4 @@ keywords = ["api", "response", "json", "result"]
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
+log = "0.4.17"

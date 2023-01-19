@@ -1,6 +1,8 @@
 //! 该模块定义通用的异步/远程接口调用结果。
 use std::error::Error;
 use std::fmt::{Debug, Display};
+use log::error;
+use serde::{Serialize,Deserialize};
 
 /// API接口响应数据结构。
 #[derive(Debug, Serialize, Deserialize)]
@@ -138,16 +140,13 @@ pub trait TransformResult {
 
 impl TransformResult for DaoResult {
     fn to_json_str<T>(self, err_log: T) -> String where T: Debug + Display {
-        let ret: ApiResp;
-        match self {
-            Ok(r) => {
-                ret = r;
-            }
+        let ret: ApiResp = match self {
+            Ok(r) => r,
             Err(e) => {
                 error!("{} {:?}", err_log, e);
-                ret = ApiResp::error(-1, e.to_string());
+                ApiResp::error(-1, e.to_string())
             }
-        }
+        };
         serde_json::to_string(&ret).unwrap()
     }
 }

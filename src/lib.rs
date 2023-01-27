@@ -162,6 +162,35 @@ impl TransformResult for DaoResult {
     }
 }
 
+/// 回滚当前的事务后退出当前函数，返回包含通用错误信息的结果对象。
+#[macro_export]
+macro_rules! rollback {
+    ($resp: expr, $tx: expr, $code: expr) => {
+        if let Err(e) = $resp {
+            $tx.rollback().await?;
+            return Ok(ApiResp::error($code, e.to_string()));
+        }
+    };
+}
+
+/// 当出现错误或更新记录数未0时，回滚当前的事务后退出当前函数，返回包含通用错误信息的结果对象。
+#[macro_export]
+macro_rules! rollback_for_no_match {
+    ($resp: expr, $tx: expr, $code: expr) => {
+        match $resp {
+            Err(e) => {
+                $tx.rollback().await?;
+                return Ok(ApiResp::error($code, e.to_string()));
+            },
+            Ok(r) if r.rows_affected == 0 => {
+                $tx.rollback().await?;
+                return Ok(ApiResp::error($code, "未匹配到目标记录".to_string()));
+            },
+            _ => {}
+        }
+    };
+}
+
 #[cfg(test)]
 mod tests {
     use serde_json::json;
